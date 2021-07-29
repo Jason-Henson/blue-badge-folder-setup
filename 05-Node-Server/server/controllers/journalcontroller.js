@@ -1,5 +1,5 @@
 let express = require('express');
-const { restart } = require('nodemon');
+// const { restart } = require('nodemon');
 let router = express.Router(); 
 
 router.get('/practice', (req, res) => {
