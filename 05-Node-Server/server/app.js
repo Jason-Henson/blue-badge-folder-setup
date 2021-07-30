@@ -6,6 +6,7 @@ let user = require('./controllers/userController');
 let test = require('./controllers/testControllers');
 let calculatorController = require('./controllers/calculatorController'); 
 
+app.use(express.json()); 
 sequelize.sync();
 
 // .use method is a middleware function that allows us tp create a pathway. 
