@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day1 Challange - Jason</title>
-</head>
-<body>
-    <form action="">
-        <input type="text" name="" id="txtInput">
-        <button type="button" id="btnSearch">Search</button>
-        <div id="divOutput"></div>
-    </form>
-    <script src="index.js"></script>  
-</body>
-</html>
+var express = require("express");
+var app = express();
+var sequelize = require("./db");
+app.use(express.json());
+var user = require("./controllers/user-controller");
+
+sequelize.sync();
+
+app.use(require("./middleware/headers"));
+
+app.use("/user", user);
+
+app.listen(3000, function () {
+  console.log("App is listening on port 3000");
+});
