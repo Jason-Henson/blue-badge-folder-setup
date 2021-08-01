@@ -2,6 +2,7 @@ const { restart } = require('nodemon');
 
 const router = require('express').Router();
 const User = require('../db').import('../models/user.js');
+const jwt = require('jsonwebtoken');
 
 /* ******************
  *** USER CREATE ***
@@ -15,8 +16,11 @@ router.post('/create', (req, res) => {
     })
     .then(
         function createSuccess(user) {
+            let token = jwt.sign({ id: user.id, email: user.email }, "i_am_secret", { expiresIn: 60*60*24 })
             res.json({
-                user: user
+                user: user,
+                message: 'User successfully created',
+                sessionToken: token, 
             });
         }
     )
@@ -37,8 +41,11 @@ router.post('/login', (req, res) => {
 
         .then(function loginSuccess(user) {
             if (user) {
+                let token = jwt.sign({ id: user.id, email: user.email }, "i_am_secret", { expiresIn: 60*60*24 })
                 res.status(200).json({
-                    user: user
+                    user: user,
+                    message: 'User successfully loggin in!',
+                    sessionToken: token,
                 })
             } else {
                 res.status(500).json({ error: 'User does not exist.'})
@@ -46,15 +53,5 @@ router.post('/login', (req, res) => {
         })
         .catch(err => res.status(500).json({ error: err }))
 }); 
-
-// router.post('/login', (req, res) => {
-//     User.findOne({ where: { email: req.body.user.email } }).then(function loginSuccess(user) {
-//         if(user){
-//             res.status(200).json({ user: user });
-//         } else {
-//             res.status(500).json('The email address you entered was not found');
-//         }  
-//     });                 
-// });
 
 module.exports = router; 

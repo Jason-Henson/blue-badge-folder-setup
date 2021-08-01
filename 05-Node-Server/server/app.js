@@ -1,3 +1,4 @@
+require('dotenv').config(); 
 let express = require('express'); // import dependancy of express to usee http reqeusts for later. 
 const app = express();  // creates a instance of express  vaiable.  Firing off funciton allowing us to ma make and Express app.  It gives us accesss to methods and properties.  
 const sequelize = require('./db');
