@@ -14,7 +14,7 @@ sequelize.sync();
 app.use('/journal', journal); 
 app.use('/user', user);
 app.use('/test', test); 
-app.use('/calc', calculatorController); 
+app.use('/calc', calculatorController);
 
 // .listen allows up to listen a specified port on the local host.   
 app.listen(3000, function() {
