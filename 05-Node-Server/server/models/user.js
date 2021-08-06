@@ -1,6 +1,3 @@
-// email store as string null = false
-// password sore as string null = false
-
 module.exports = function (sequelize, DataTypes) {
     const User = sequelize.define('user', {
         email: {
