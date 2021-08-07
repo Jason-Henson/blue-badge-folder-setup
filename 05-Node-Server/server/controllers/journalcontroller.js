@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
         .catch(err => res.status(500).json({ error: err }))
 });
 /* **************************
-*** GET ALL ENTRIES ***
+*** GET ENTRIES BY USER ***
 *************************** */
 router.get('/mine', validateSession, (req, res) => {
     let userid = req.user.id
@@ -43,15 +43,44 @@ router.get('/mine', validateSession, (req, res) => {
 });
 
 /* **************************
-*** GET ALL ENTRIES ***
+*** GET ENTRIES BY TITLE ***
 *************************** */
 router.get('/:title', (req, res) => {
     let title = req.params.title;
 
-    Journal.find({
+    Journal.findAll({
         where: { title: title }
     })
-    .then()
-})
+    .then(journals => res.status(200).json(journals))
+    .catch(err => res.status(500).json({ error: err }))
+});
+
+/* **************************
+*** UPDATE ENTRIES ***
+*************************** */
+router.put('/update/:entryId', validateSession, (req, res) => {
+    const updateJournalEntry = {
+        title: req.body.journal.title,
+        date: req.body.journal.date,
+        entry: req.body.journal.entry,
+    };
+
+    const query = { where: { id: req.params.entryId, owner: req.user.id}}
+
+    Journal.update(updateJournalEntry, query)
+    .then((journals) => res.status(200).json(journals))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+/* **************************
+*** DELETE ENTRIES ***
+*************************** */
+router.delete('/delete/:id', validateSession, (req, res) => {
+    const query = { where: { id: req.params.id, owner: req.user.id } }
+
+    Journal.destroy(query)
+        .then(() => res.status(200).json({ message: 'That little problem has been taken care of... if you know what I mean' }))
+        .catch((err) => res.status(500).json({ error: err }));
+}); 
 
 module.exports = router;
